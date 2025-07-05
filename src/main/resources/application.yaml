@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: video-processor-producer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hackaton
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: host.docker.internal:29092,host.docker.internal:29094
+    producer:
+      group-id: video-processors
+      key-serializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.fiap.video_processor.infrastructure.dto
+        spring.json.value.default.type: com.fiap.video_processor_producer.infrastructure.dto.VideoUploadPayload
+s3:
+  bucket: videos-hackaton
+server:
+  port: 8091
